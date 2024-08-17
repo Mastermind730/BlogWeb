@@ -15,7 +15,7 @@ import MainContent from "./MainContent";
 // Home Page Component
 export default function HomePage(): JSX.Element {
   return (
-    <div className="container mx-auto py-8">
+    <div className="">
       {/* Header Section */}
      <Navbar/>
 
