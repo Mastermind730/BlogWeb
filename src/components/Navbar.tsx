@@ -1,9 +1,26 @@
-import React from "react";
+"use client";
 import Link from "next/link";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { Badge } from "@/components/ui/badge"; // Import ShadCN Badge component
+
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    // Simulate checking if the user is logged in (replace with real check)
+    const loggedUser = localStorage.getItem("username"); 
+    // Assuming username is stored in localStorage
+    console.log(loggedUser)
+    if (loggedUser) {
+      setIsLoggedIn(true);
+      setUsername(loggedUser);
+    }
+  }, []);
+
   return (
     <header className="bg-gradient-to-r from-black to-gray-800 mt-0 shadow-lg focus:outline-none">
       <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-10">
@@ -11,10 +28,7 @@ const Navbar = (props: Props) => {
           <div className="flex-1 md:flex md:items-center md:gap-12">
             <Link className="block text-2xl text-red-600 hover:text-red-500" href="#">
               <span className="sr-only">Home</span>
-              <Image src={"/logo.png"} alt="logo" width={50} height={50}/>
-
-              
-                
+              <Image src={"/logo.png"} alt="logo" width={50} height={50} />
             </Link>
           </div>
 
@@ -29,70 +43,32 @@ const Navbar = (props: Props) => {
                     About
                   </Link>
                 </li>
-
-                <li>
-                  <Link
-                    className="text-gray-300 transition text-[20px] hover:text-blue-400"
-                    href="#"
-                  >
-                    Careers
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className="text-gray-300 transition text-[20px] hover:text-blue-400"
-                    href="#"
-                  >
-                    History
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className="text-gray-300 transition text-[20px] hover:text-blue-400"
-                    href="#"
-                  >
-                    Services
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className="text-gray-300 transition text-[20px] hover:text-blue-400"
-                    href="#"
-                  >
-                    Projects
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className="text-gray-300 transition text-[20px] hover:text-blue-400"
-                    href="#"
-                  >
-                    Blog
-                  </Link>
-                </li>
+                {/* Add more nav items here */}
               </ul>
             </nav>
 
             <div className="flex items-center gap-6">
-              <div className="sm:flex sm:gap-4">
-                <Link
-                  className="rounded-md bg-blue-600 px-5 py-2.5 text-center text-sm font-bold text-white shadow-md transition hover:bg-blue-500 focus:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  href="/login"
-                >
-                  Login
-                </Link>
+              {isLoggedIn ? (
+                <Badge className="rounded-full w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-xl font-bold">
+                  {username.charAt(0).toUpperCase()}
+                </Badge>
+              ) : (
+                <div className="sm:flex sm:gap-4">
+                  <Link
+                    className="rounded-md bg-blue-600 px-5 py-2.5 text-center text-sm font-bold text-white shadow-md transition hover:bg-blue-500 focus:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    href="/login"
+                  >
+                    Login
+                  </Link>
 
-                <Link
-                  className="hidden rounded-md bg-gray-800 px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 sm:block"
-                  href="/register"
-                >
-                  Register
-                </Link>
-              </div>
+                  <Link
+                    className="hidden rounded-md bg-gray-800 px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 sm:block"
+                    href="/register"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
 
               <div className="block md:hidden">
                 <button className="rounded bg-gray-700 p-2 text-gray-300 transition hover:text-gray-100">
