@@ -3,13 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge"; // Import ShadCN Badge component
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-
+  const router=useRouter();
   useEffect(() => {
     // Simulate checking if the user is logged in (replace with real check)
     const loggedUser = localStorage.getItem("username"); 
@@ -20,6 +22,12 @@ const Navbar = (props: Props) => {
       setUsername(loggedUser);
     }
   }, []);
+
+  const LogOut=()=>{
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    router.push("/login");
+  }
 
   return (
     <header className="bg-gradient-to-r from-black to-gray-800 mt-0 shadow-lg focus:outline-none">
@@ -43,15 +51,20 @@ const Navbar = (props: Props) => {
                     About
                   </Link>
                 </li>
-                {/* Add more nav items here */}
+             
               </ul>
             </nav>
 
             <div className="flex items-center gap-6">
               {isLoggedIn ? (
+                <>
                 <Badge className="rounded-full w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-xl font-bold">
                   {username.charAt(0).toUpperCase()}
                 </Badge>
+                <Button onClick={LogOut}  className="p-5 py-2 bg-red-500 text-2xl hover:bg-red-600">
+                  LogOut
+                </Button>
+                </>
               ) : (
                 <div className="sm:flex sm:gap-4">
                   <Link

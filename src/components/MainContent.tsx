@@ -13,13 +13,13 @@ const MainContent = (props: Props) => {
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-wrap -m-4">
           {Array(3).fill("").map((_, index) => (
-            <div key={index} className="p-4 lg:w-1/3 w-full">
-              <Card className="h-full bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+            <div key={index} className="p-5 lg:w-1/3 w-full">
+              <Card className="h-full bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-xs font-medium text-gray-400 mb-1 uppercase">
                     Category
                   </CardTitle>
-                  <CardTitle className="sm:text-2xl text-xl font-medium text-gray-900 mb-3">
+                  <CardTitle className="sm:text-2xl text-xl font-medium text-white mb-3">
                     Post Title {index + 1}
                   </CardTitle>
                 </CardHeader>
