@@ -56,3 +56,51 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+# views.py
+
+from django.http import JsonResponse
+
+from django.http import JsonResponse
+from playwright.sync_api import sync_playwright
+
+# views.py
+import requests
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+
+import requests
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+import logging
+
+# Set up logging
+logger = logging.getLogger(__name__)
+
+def technology_articles(request):
+    url = 'https://medium.com/tag/technology'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Check for HTTP errors
+    except requests.RequestException as e:
+        # Log the error
+        logger.error(f"Failed to retrieve data from {url}. Error details: {e}")
+        return JsonResponse({"error": "Failed to retrieve data", "details": str(e)}, status=500)
+
+    soup = BeautifulSoup(response.content, 'html.parser')
+    articles = []
+
+    for post in soup.find_all('div', class_='postArticle'):
+        title = post.find('h3').get_text() if post.find('h3') else 'No Title'
+        link = post.find('a')['href'] if post.find('a') else 'No Link'
+        author = post.find('a', class_='ds-link').get_text() if post.find('a', class_='ds-link') else 'No Author'
+        preview = post.find('p').get_text() if post.find('p') else 'No Preview'
+        
+        articles.append({
+            "title": title,
+            "link": link,
+            "author": author,
+            "preview": preview,
+        })
+
+    return JsonResponse(articles, safe=False)
+
