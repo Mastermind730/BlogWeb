@@ -36,8 +36,8 @@ const Navbar = (props: Props) => {
           <div className="flex-1 md:flex md:items-center md:gap-12">
             <Link className="block text-2xl text-red-600 hover:text-red-500" href="#">
               <span className="sr-only">Home</span>
-              <Image src={"/logo.png"} alt="logo" width={50} height={50} />
-            </Link>
+              <Image src={"/logo.svg"} alt="logo" width={120} height={120}/>
+              </Link>
           </div>
 
           <div className="md:flex md:items-center md:gap-16">

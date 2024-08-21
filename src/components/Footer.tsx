@@ -55,7 +55,7 @@ const Footer = (props: Props) => {
               />
             </svg>
           </div> */}
-                        <Image src={"/logo.png"} alt="logo" width={50} height={50}/>
+                        <Image src={"/logo.svg"} alt="logo" width={120} height={120}/>
 
   
           <p className="mt-4 max-w-xs text-white">
@@ -161,23 +161,23 @@ const Footer = (props: Props) => {
   
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
           <div>
-            <p className="font-medium text-white">Services</p>
+            <p className="font-medium text-white">Top Exams</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> 1on1 Coaching </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Company Review </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Accounts Review </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> HR Consulting </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
               </li>
   
               <li>
