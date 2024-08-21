@@ -181,7 +181,37 @@ const Footer = (props: Props) => {
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> SEO Optimisation </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE ADVANCED 2024</Link>
               </li>
             </ul>
           </div>
