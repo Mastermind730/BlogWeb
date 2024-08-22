@@ -25,8 +25,8 @@ const Comments: React.FC = () => {
   const [commentText, setCommentText] = useState<string>('');
   const [replyText, setReplyText] = useState<{ [key: number]: string }>({});
   const [showReplyForm, setShowReplyForm] = useState<{ [key: number]: boolean }>({});
-  const[name,setName]=useState("")
-  const[email,setEmail]=useState("")
+  const[name,setName]=useState<string |null>("")
+  const[email,setEmail]=useState<string |null>("")
 
   useEffect(() => {
     // Initialize EasyMDE
@@ -67,9 +67,10 @@ const Comments: React.FC = () => {
   const handleReply = async(e: React.FormEvent<HTMLFormElement>, commentId: number) => {
     e.preventDefault();
     // Post reply to Django backend
-    await axios.post<Reply>(`http://127.0.0.1:8000/api/comments/${commentId}/reply`, {
-
+    await axios.post<Reply>(`http://127.0.0.1:8000/api/comments/${commentId}/reply/`, {
+      
       reply: replyText[commentId],
+      
     })
       .then(response => {
         setComments(comments.map(comment =>

@@ -90,6 +90,7 @@ def technology_articles(request):
 logger = logging.getLogger(__name__)
 
 class CommentViewSet(viewsets.ModelViewSet):
+    print("method called")
     queryset = Comment.objects.all().order_by('-created_at')
     serializer_class = CommentSerializer
     
@@ -98,8 +99,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         
         try:
             # Automatically assign the currently authenticated user to the comment
-            # print(request)
-            
             # request.data['user'] = request.user.username
 
             serializer = self.get_serializer(data=request.data)
@@ -143,22 +142,26 @@ class CommentViewSet(viewsets.ModelViewSet):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=True, methods=['post'])
-        def reply(self, request, pk=None):
+    def reply(self, request,pk=None):
+        print("method being called")
         comment = self.get_object()
         
         # Validate and extract data from the request
-        reply_text = request.data.get('reply', None)
+        reply_text = request.data.get('reply',None)
         if not reply_text:
             return Response({'error': 'Reply content is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Create a reply object and assign the currently authenticated user
+            print("reply creating")
             reply = Reply.objects.create(
                 comment=comment,
                 reply=reply_text,
-                user=request.user  # Assign the currently authenticated user
+                
+ # Assign the currently authenticated user
+ 
             )
-            
+            print(reply)
             serializer = ReplySerializer(reply)
             logger.info("Reply created successfully: %s", serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
