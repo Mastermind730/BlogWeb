@@ -1,8 +1,16 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import axios from 'axios';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import axios from "axios";
+import Link from "next/link";
+import { Input } from "@/components/ui/input"; // Assuming you have an Input component
 
 type Article = {
   title: string;
@@ -13,15 +21,19 @@ type Article = {
 
 const MainContent = () => {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetchArticles = async () => {
     try {
-      const response = await axios.get('https://v1.nocodeapi.com/sourav_09/medium/GwiOVUQjnJVWzkme');
+      const response = await axios.get(
+        "https://v1.nocodeapi.com/sourav_09/medium/GwiOVUQjnJVWzkme"
+      );
       setArticles(response.data);
-      // console.log(response.data)
+      setFilteredArticles(response.data);
     } catch (error) {
-      console.error('Error fetching articles:', error);
+      console.error("Error fetching articles:", error);
     } finally {
       setLoading(false);
     }
@@ -31,18 +43,39 @@ const MainContent = () => {
     fetchArticles();
   }, []);
 
+  useEffect(() => {
+    if (searchQuery) {
+      setFilteredArticles(
+        articles.filter((article) =>
+          article.title.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredArticles(articles);
+    }
+  }, [searchQuery, articles]);
+
   return (
     <section className="text-gray-600 body-font">
-      <h1 className="text-center font-bold text-4xl mt-2 mb-2">
-        Latest Posts
-      </h1>
+      <h1 className="text-center font-bold text-4xl mt-2 mb-2">Latest Posts</h1>
 
       <div className="container px-5 py-10 mx-auto">
+        {/* Search Bar */}
+        <div className="mb-8 flex justify-center">
+          <Input
+            type="text"
+            placeholder="Search posts by title..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full max-w-lg p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
+          />
+        </div>
+
         <div className="flex flex-wrap -m-4">
           {loading ? (
             <p className="text-center text-gray-500 w-full">Loading articles...</p>
-          ) : articles.length > 0 ? (
-            articles.map((article, index) => (
+          ) : filteredArticles.length > 0 ? (
+            filteredArticles.map((article, index) => (
               <div key={index} className="p-5 lg:w-1/3 w-full">
                 <Card className="h-full bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                   <CardHeader>
@@ -58,9 +91,9 @@ const MainContent = () => {
                       {article.preview}
                     </CardDescription>
                     <Link
-                      href={article.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                      href={article.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-indigo-500 inline-flex items-center cursor-pointer"
                     >
                       Learn More
@@ -78,35 +111,21 @@ const MainContent = () => {
                       </svg>
                     </Link>
                   </CardContent>
-                   <CardFooter className="flex justify-between items-center text-gray-400 text-sm mt-4">
-                    {/* <div className="inline-flex items-center">
-                      <svg
-                        className="w-4 h-4 mr-1"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx={12} cy={12} r={3} />
-                      </svg>
-                      1.2K
-                    </div>  */}
-                    <div className="inline-flex items-center">
+                  <CardFooter className="flex justify-between items-center text-gray-400 text-sm mt-4">
+                    <div className="inline-flex flex-col items-center">
                       <Link href={"/comments"}>
-                      <svg
-                        className="w-4 h-4 mr-1"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-                      </svg>
+                        <svg
+                          className="w-4 h-4 mr-1"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+                        </svg>
+                        Add Comments
                       </Link>
                     </div>
                   </CardFooter>

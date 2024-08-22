@@ -58,7 +58,7 @@ const Navbar = (props: Props) => {
               </>
             )}
 
-            <button
+            {/* <button
               onClick={toggleMobileMenu}
               className="rounded bg-gray-700 p-2 text-gray-300 transition hover:text-gray-100"
             >
@@ -76,7 +76,7 @@ const Navbar = (props: Props) => {
                   d="M4 6h16M4 12h16m-7 6h7"
                 />
               </svg>
-            </button>
+            </button> */}
           </div>
 
           <div className="hidden md:flex items-center gap-8">
