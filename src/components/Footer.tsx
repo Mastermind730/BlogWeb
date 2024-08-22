@@ -217,59 +217,168 @@ const Footer = (props: Props) => {
           </div>
   
           <div>
-            <p className="font-medium text-white">Company</p>
+            <p className="font-medium text-white">Top Exams</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> About </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Meet the Team </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Accounts Review </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
+              </li>
+  
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
+              </li>
+  
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE ADVANCED 2024</Link>
               </li>
             </ul>
           </div>
   
           <div>
-            <p className="font-medium text-white">Helpful Links</p>
+            <p className="font-medium text-white">Top Exams</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Contact </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> FAQs </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Live Chat </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
+              </li>
+  
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
+              </li>
+  
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE ADVANCED 2024</Link>
               </li>
             </ul>
           </div>
-  
           <div>
-            <p className="font-medium text-white">Legal</p>
+            <p className="font-medium text-white">Top Exams</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Accessibility </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Returns Policy </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Refund Policy </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> Hiring Statistics </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
+              </li>
+  
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> SET 2024</Link>
+              </li>
+              <li>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE ADVANCED 2024</Link>
               </li>
             </ul>
           </div>

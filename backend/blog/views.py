@@ -1,18 +1,20 @@
-from rest_framework import generics
-from .models import Post
-from .serializers import PostSerializer
-from rest_framework import generics
+from django.urls import path, include
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import RegisterSerializer
+from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from django.http import JsonResponse
+import requests
+from bs4 import BeautifulSoup
+import logging
+from .models import Post, Comment, Reply
+from .serializers import PostSerializer, RegisterSerializer, CommentSerializer, ReplySerializer
 
-
+# Set up logging
+logger = logging.getLogger(__name__)
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -56,25 +58,6 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-# views.py
-
-from django.http import JsonResponse
-
-from django.http import JsonResponse
-from playwright.sync_api import sync_playwright
-
-# views.py
-import requests
-from bs4 import BeautifulSoup
-from django.http import JsonResponse
-
-import requests
-from bs4 import BeautifulSoup
-from django.http import JsonResponse
-import logging
-
-# Set up logging
-logger = logging.getLogger(__name__)
 
 def technology_articles(request):
     url = 'https://medium.com/tag/technology'
@@ -104,3 +87,88 @@ def technology_articles(request):
 
     return JsonResponse(articles, safe=False)
 
+logger = logging.getLogger(__name__)
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all().order_by('-created_at')
+    serializer_class = CommentSerializer
+    
+    def create(self, request, *args, **kwargs):
+        logger.debug("Received request data: %s", request.data)
+        
+        try:
+            # Automatically assign the currently authenticated user to the comment
+            # print(request)
+            
+            # request.data['user'] = request.user.username
+
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            logger.info("Comment created successfully: %s", serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        except ValidationError as e:
+            logger.error("Validation Error Details: %s", e.detail)
+            return Response({'validation_errors': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist as e:
+            logger.error("Object Does Not Exist: %s", str(e))
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("General Error: %s", str(e))
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def update(self, request, *args, **kwargs):
+        logger.debug("Received request data: %s", request.data)
+        
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        
+        try:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            logger.info("Comment updated successfully: %s", serializer.data)
+            return Response(serializer.data)
+
+        except ValidationError as e:
+            logger.error("Validation Error Details: %s", e.detail)
+            return Response({'validation_errors': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist as e:
+            logger.error("Object Does Not Exist: %s", str(e))
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("General Error: %s", str(e))
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=True, methods=['post'])
+        def reply(self, request, pk=None):
+        comment = self.get_object()
+        
+        # Validate and extract data from the request
+        reply_text = request.data.get('reply', None)
+        if not reply_text:
+            return Response({'error': 'Reply content is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Create a reply object and assign the currently authenticated user
+            reply = Reply.objects.create(
+                comment=comment,
+                reply=reply_text,
+                user=request.user  # Assign the currently authenticated user
+            )
+            
+            serializer = ReplySerializer(reply)
+            logger.info("Reply created successfully: %s", serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except ValidationError as e:
+            logger.error("Validation Error Details: %s", e.detail)
+            return Response({'validation_errors': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist as e:
+            logger.error("Object Does Not Exist: %s", str(e))
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.error("General Error: %s", str(e))
+            return Response({'error': 'An internal server error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

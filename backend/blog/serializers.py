@@ -22,3 +22,18 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
+
+from rest_framework import serializers
+from .models import Comment, Reply
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = ['id', 'reply', 'created_at']
+
+class CommentSerializer(serializers.ModelSerializer):
+    replies = ReplySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'name', 'email', 'comment', 'created_at', 'replies']

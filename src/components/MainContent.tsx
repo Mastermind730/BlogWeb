@@ -19,6 +19,7 @@ const MainContent = () => {
     try {
       const response = await axios.get('https://v1.nocodeapi.com/sourav_09/medium/GwiOVUQjnJVWzkme');
       setArticles(response.data);
+      // console.log(response.data)
     } catch (error) {
       console.error('Error fetching articles:', error);
     } finally {
