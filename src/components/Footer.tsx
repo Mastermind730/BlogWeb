@@ -217,104 +217,102 @@ const Footer = (props: Props) => {
           </div>
   
           <div>
-            <p className="font-medium text-white">Top Exams</p>
+            <p className="font-medium text-white">College</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> College review</Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top Colleges in India </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top MBA Colleges in India </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top Engineering Colleges in India </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top MBA Colleges in India Accepting CAT Score </Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top Law colleges in India</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top Colleges in Chennai</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Top Medical Challenges in India</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> LPU</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> UPES</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> MAHE</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> SRM University</Link>
               </li>
               <li>
                 <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> SET 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> Great Lakes</Link>
               </li>
-              <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> JEE ADVANCED 2024</Link>
-              </li>
+             
             </ul>
           </div>
   
           <div>
-            <p className="font-medium text-white">Top Exams</p>
+            <p className="font-medium text-white">Predictors & Ebooks</p>
   
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT Percentile Predictor </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CAT 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Main College Predictor </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> NEET 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CAT College Predictor </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> GATE 2025 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> JEE Advanced College Predictor </Link>
               </li>
   
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CMAT 2024 </Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET College Predictor </Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> CLAT</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> NEET Rank Predictor</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> GATE College Predictor with PSU Chances</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MAT 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> CLAT College Predictor</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> SNAP 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> E-Books & Sample Paper</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> IIT JAM 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> College Predictor</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> LPUNEST 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> MHCET Law College Predictor</Link>
               </li>
               <li>
-                <Link href="#" className="text-white transition hover:opacity-75"> MET 2024</Link>
+                <Link href="#" className="text-white transition hover:opacity-75"> AILET</Link>
               </li>
               <li>
                 <Link href="#" className="text-white transition hover:opacity-75"> CUET 2024</Link>
