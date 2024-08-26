@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   Card,
   CardContent,
@@ -10,13 +11,25 @@ import {
 } from "@/components/ui/card";
 import axios from "axios";
 import Link from "next/link";
-import { Input } from "@/components/ui/input"; // Assuming you have an Input component
+import { Input } from "@/components/ui/input";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiFillBook,
+  AiOutlineBook,
+} from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Article = {
+  id: string;
   title: string;
   link: string;
   author: string;
   preview: string;
+  isLiked: boolean;
+  isBookmarked: boolean;
+  category: "Technical" | "Non-Technical" | "Other";
 };
 
 const MainContent = () => {
@@ -30,8 +43,17 @@ const MainContent = () => {
       const response = await axios.get(
         "https://v1.nocodeapi.com/sourav_09/medium/GwiOVUQjnJVWzkme"
       );
-      setArticles(response.data);
-      setFilteredArticles(response.data);
+      const fetchedArticles = response.data.map(
+        (article: Article, index: number) => ({
+          ...article,
+          id: uuidv4(), // Generate a unique ID for each article
+          isLiked: false,
+          isBookmarked: false,
+          category: "Technical", // Default category, update as necessary
+        })
+      );
+      setArticles(fetchedArticles);
+      setFilteredArticles(fetchedArticles);
     } catch (error) {
       console.error("Error fetching articles:", error);
     } finally {
@@ -42,6 +64,39 @@ const MainContent = () => {
   useEffect(() => {
     fetchArticles();
   }, []);
+
+  const toggleLike = (id: string) => {
+    setArticles((prevArticles) =>
+      prevArticles.map((article) =>
+        article.id === id ? { ...article, isLiked: !article.isLiked } : article
+      )
+    );
+  
+    const likedArticle = articles.find((article) => article.id === id);
+    if (likedArticle?.isLiked) {
+      toast.error("Article disliked!");
+    } else {
+      toast.success("Article liked!");
+    }
+  };
+  
+  const toggleBookmark = (id: string) => {
+    setArticles((prevArticles) =>
+      prevArticles.map((article) =>
+        article.id === id
+          ? { ...article, isBookmarked: !article.isBookmarked }
+          : article
+      )
+    );
+  
+    const bookmarkedArticle = articles.find((article) => article.id === id);
+    if (bookmarkedArticle?.isBookmarked) {
+      toast.error("Article unbookmarked!");
+    } else {
+      toast.success("Article bookmarked!");
+    }
+  };
+  
 
   useEffect(() => {
     if (searchQuery) {
@@ -57,6 +112,8 @@ const MainContent = () => {
 
   return (
     <section className="text-gray-600 body-font">
+      <ToastContainer />
+
       <h1 className="text-center font-bold text-4xl mt-2 mb-2">Latest Posts</h1>
 
       <div className="container px-5 py-10 mx-auto">
@@ -73,10 +130,12 @@ const MainContent = () => {
 
         <div className="flex flex-wrap -m-4">
           {loading ? (
-            <p className="text-center text-gray-500 w-full">Loading articles...</p>
+            <p className="text-center text-gray-500 w-full">
+              Loading articles...
+            </p>
           ) : filteredArticles.length > 0 ? (
-            filteredArticles.map((article, index) => (
-              <div key={index} className="p-5 lg:w-1/3 w-full">
+            filteredArticles.map((article) => (
+              <div key={article.id} className="p-5 lg:w-1/3 w-full">
                 <Card className="h-full bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                   <CardHeader>
                     <CardTitle className="text-xs font-medium text-gray-400 mb-1 uppercase">
@@ -112,6 +171,24 @@ const MainContent = () => {
                     </Link>
                   </CardContent>
                   <CardFooter className="flex justify-between items-center text-gray-400 text-sm mt-4">
+                    <div className="flex space-x-4">
+                      {/* Like/Dislike Button */}
+                      <button onClick={() => toggleLike(article.id)}>
+                        {article.isLiked ? (
+                          <AiFillHeart className="text-red-500 w-6 h-6" />
+                        ) : (
+                          <AiOutlineHeart className="text-gray-400 w-6 h-6" />
+                        )}
+                      </button>
+                      {/* Bookmark/Unbookmark Button */}
+                      <button onClick={() => toggleBookmark(article.id)}>
+                        {article.isBookmarked ? (
+                          <AiFillBook className="text-yellow-500 w-6 h-6" />
+                        ) : (
+                          <AiOutlineBook className="text-gray-400 w-6 h-6" />
+                        )}
+                      </button>
+                    </div>
                     <div className="inline-flex flex-col items-center">
                       <Link href={"/comments"}>
                         <svg
