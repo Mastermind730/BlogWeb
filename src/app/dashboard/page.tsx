@@ -11,8 +11,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import axios from 'axios';
-import { toast } from "react-toastify";
 
 type Article = {
   id: string;
@@ -26,14 +24,11 @@ type Article = {
 };
 
 const Dashboard = () => {
-  const [likedCount, setLikedCount] = useState<number>();
-  const [bookmarkedCount, setBookmarkedCount] = useState<number>();
+  const [likedCount, setLikedCount] = useState<number>(0);
+  const [bookmarkedCount, setBookmarkedCount] = useState<number>(0);
   const [articles, setArticles] = useState<Article[]>([]);
   const [newPostTitle, setNewPostTitle] = useState<string>("");
   const [newPostContent, setNewPostContent] = useState<string>("");
-
-  // Fetch token from localStorage or any other secure storage mechanism
-  const token = localStorage.getItem("token") || ""; // Replace with the actual token retrieval method
 
   useEffect(() => {
     const storedLikedCount = localStorage.getItem("likedCount");
@@ -46,42 +41,25 @@ const Dashboard = () => {
     if (storedArticles) setArticles(JSON.parse(storedArticles));
   }, []);
 
- 
-  // Update localStorage when articles array changes
-  useEffect(() => {
-    localStorage.setItem("articles", JSON.stringify(articles));
-  }, [articles]);
-
   const handleAddPost = async () => {
-    // Ensure that title and content are not empty
-    if (!newPostTitle || !newPostContent) {
-      toast.error('Post title and content cannot be empty.');
-      return;
-    }
-
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/api/posts/', {
+    const response = await fetch('http://127.0.0.1:8000/api/posts/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         title: newPostTitle,
         content: newPostContent,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Include the JWT token if using token-based authentication
-          'Content-Type': 'application/json',
-        }
-      });
+      }),
+    });
 
-      console.log('New Post Added:', response.data);
-      toast.success("Post added successfully!");
-
-      // Optionally, update the articles state to include the new post
-      setArticles([...articles, response.data]);
-
-      // Clear the input fields
+    if (response.ok) {
+      const newPost = await response.json();
+      console.log('New Post Added:', newPost);
       setNewPostTitle('');
       setNewPostContent('');
-    } catch (error: any) {
-      console.error('Error adding post:', error.response ? error.response.data : error.message);
-      toast.error('Failed to add post.');
+    } else {
+      console.error('Failed to add post');
     }
   };
 
@@ -203,10 +181,7 @@ const Dashboard = () => {
               />
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button
-                onClick={handleAddPost}
-                className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300"
-              >
+              <Button onClick={handleAddPost} className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300">
                 Add Post
               </Button>
             </CardFooter>
