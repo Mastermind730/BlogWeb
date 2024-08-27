@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Post
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework import serializers
+from .models import Article, UserArticleInteraction
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -37,3 +39,25 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'name', 'email', 'comment', 'created_at', 'replies']
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+
+class UserArticleInteractionSerializer(serializers.ModelSerializer):
+    article = ArticleSerializer()
+
+    class Meta:
+        model = UserArticleInteraction
+        fields = ['article', 'is_liked', 'is_bookmarked']
+
+# serializers.py
+from rest_framework import serializers
+from .models import BlogPost
+
+class BlogPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPost
+        fields = ['id', 'title', 'content', 'author', 'date_created']

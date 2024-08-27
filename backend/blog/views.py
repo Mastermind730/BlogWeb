@@ -12,6 +12,11 @@ from bs4 import BeautifulSoup
 import logging
 from .models import Post, Comment, Reply
 from .serializers import PostSerializer, RegisterSerializer, CommentSerializer, ReplySerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .models import Article, UserArticleInteraction
+from .serializers import ArticleSerializer, UserArticleInteractionSerializer
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -175,3 +180,53 @@ class CommentViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error("General Error: %s", str(e))
             return Response({'error': 'An internal server error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def toggle_like_article(request, article_id):
+    user = request.user
+    try:
+        article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        return Response({"error": "Article not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    interaction, created = UserArticleInteraction.objects.get_or_create(user=user, article=article)
+    interaction.is_liked = not interaction.is_liked
+    interaction.save()
+
+    return Response({"message": "Success"}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def toggle_bookmark_article(request, article_id):
+    user = request.user
+    try:
+        article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        return Response({"error": "Article not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    interaction, created = UserArticleInteraction.objects.get_or_create(user=user, article=article)
+    interaction.is_bookmarked = not interaction.is_bookmarked
+    interaction.save()
+
+    return Response({"message": "Success"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_user_articles(request):
+    user = request.user
+    interactions = UserArticleInteraction.objects.filter(user=user)
+    serializer = UserArticleInteractionSerializer(interactions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+# views.py
+from rest_framework import generics, permissions
+from .models import BlogPost
+from .serializers import BlogPostSerializer
+
+class BlogPostListCreateView(generics.ListCreateAPIView):
+    queryset = BlogPost.objects.all().order_by('-date_created')
+    serializer_class = BlogPostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

@@ -3,6 +3,9 @@ from . import views
 from .views import RegisterView, LoginView, technology_articles, CommentViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
+from django.urls import path
+from .views import toggle_like_article, toggle_bookmark_article, get_user_articles
+from .views import BlogPostListCreateView
 
 # Define the router and register the CommentViewSet
 router = DefaultRouter()
@@ -18,4 +21,10 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('technology/', technology_articles, name='technology_articles'),
     path('', include(router.urls)),  # Include the router URLs
+    path('toggle-like-article/<str:article_id>/', toggle_like_article, name='toggle_like_article'),
+    path('toggle-bookmark-article/<int:article_id>/', toggle_bookmark_article, name='toggle_bookmark_article'),
+    path('get-user-articles/', get_user_articles, name='get_user_articles'),
+    path('/posts/', BlogPostListCreateView.as_view(), name='blogpost-list-create'),
+
 ]
+

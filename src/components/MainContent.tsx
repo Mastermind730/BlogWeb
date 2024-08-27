@@ -54,48 +54,72 @@ const MainContent = () => {
       );
       setArticles(fetchedArticles);
       setFilteredArticles(fetchedArticles);
+  
+      // Store the fetched articles in localStorage
     } catch (error) {
       console.error("Error fetching articles:", error);
     } finally {
       setLoading(false);
     }
   };
+  
+  localStorage.setItem("articles", JSON.stringify(articles));
 
   useEffect(() => {
     fetchArticles();
   }, []);
 
-  const toggleLike = (id: string) => {
-    setArticles((prevArticles) =>
-      prevArticles.map((article) =>
-        article.id === id ? { ...article, isLiked: !article.isLiked } : article
-      )
-    );
+  const toggleLike = async (id: string) => {
+    try {
+      setArticles((prevArticles) =>
+        prevArticles.map((article) =>
+          article.id === id ? { ...article, isLiked: !article.isLiked } : article
+        )
+      );
   
-    const likedArticle = articles.find((article) => article.id === id);
-    if (likedArticle?.isLiked) {
-      toast.error("Article disliked!");
-    } else {
-      toast.success("Article liked!");
+      const likedArticle = articles.find((article) => article.id === id);
+      const likedCount = parseInt(localStorage.getItem("likedCount") || "0", 10);
+  
+      if (likedArticle?.isLiked) {
+        localStorage.setItem("likedCount", (likedCount - 1).toString());
+        toast.error("Article disliked!");
+      } else {
+        localStorage.setItem("likedCount", (likedCount + 1).toString());
+        toast.success("Article liked!");
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
     }
   };
   
-  const toggleBookmark = (id: string) => {
-    setArticles((prevArticles) =>
-      prevArticles.map((article) =>
-        article.id === id
-          ? { ...article, isBookmarked: !article.isBookmarked }
-          : article
-      )
-    );
+  const toggleBookmark = async (id: string) => {
+    try {
+      setArticles((prevArticles) =>
+        prevArticles.map((article) =>
+          article.id === id
+            ? { ...article, isBookmarked: !article.isBookmarked }
+            : article
+        )
+      );
   
-    const bookmarkedArticle = articles.find((article) => article.id === id);
-    if (bookmarkedArticle?.isBookmarked) {
-      toast.error("Article unbookmarked!");
-    } else {
-      toast.success("Article bookmarked!");
+      const bookmarkedArticle = articles.find((article) => article.id === id);
+      const bookmarkedCount = parseInt(
+        localStorage.getItem("bookmarkedCount") || "0",
+        10
+      );
+  
+      if (bookmarkedArticle?.isBookmarked) {
+        localStorage.setItem("bookmarkedCount", (bookmarkedCount - 1).toString());
+        toast.error("Article unbookmarked!");
+      } else {
+        localStorage.setItem("bookmarkedCount", (bookmarkedCount + 1).toString());
+        toast.success("Article bookmarked!");
+      }
+    } catch (error) {
+      console.error("Error toggling bookmark:", error);
     }
   };
+  
   
 
   useEffect(() => {
