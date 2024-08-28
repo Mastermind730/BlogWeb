@@ -17,9 +17,87 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Article, UserArticleInteraction
 from .serializers import ArticleSerializer, UserArticleInteractionSerializer
+from dotenv import load_dotenv
 
+load_dotenv()
 # Set up logging
 logger = logging.getLogger(__name__)
+from django.views import View
+from django.http import JsonResponse
+import requests
+import os
+from django.views import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+import google.generativeai as genai
+
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY",""))
+
+# Mock function to simulate retrieving relevant documents
+def get_relevant_docs(query):
+    # Implement the logic to retrieve relevant passages
+    paragraphs = [
+    "Welcome to the IT Blog Management Chatbot! I can assist you with managing your blog posts. Here are some things I can help you with: 1. Creating a new blog post. 2. Updating an existing post. 3. Deleting a post. 4. Viewing all posts. 5. Searching for a post. 6. Getting help with using the system. Feel free to ask for help with any of these actions at any time!",
+
+    "Creating a New Blog Post: To create a new blog post, I'll guide you through the following steps: 1. Provide the title of the blog post. 2. Enter the content of the post. You can also upload files such as markdown files or code snippets. 3. Optionally, add tags related to the content, like 'software development', 'cybersecurity', or 'cloud computing'. 4. Optionally, add categories or additional metadata. Once all the information is provided, your post will be successfully created.",
+
+    "Updating an Existing Post: If you want to update an existing post, here's what you need to do: 1. Provide the title or ID of the post you want to update. 2. Specify what you want to update—title, content, tags, categories, or metadata. 3. Enter the new information for the chosen field(s). The post will be updated successfully with the new information.",
+
+    "Deleting a Post: To delete a blog post, follow these steps: 1. Provide the title or ID of the post you wish to delete. 2. Confirm that you want to delete the post. Be aware that this action cannot be undone. The post will be permanently removed after confirmation.",
+
+    "Viewing All Posts: You can view all your blog posts at any time. I'll provide a list of your posts, including titles, brief summaries, and dates. You can choose to view the details of any specific post or perform another action related to your posts.",
+
+    "Searching for a Post: To search for a blog post, just enter a keyword or phrase. I'll return a list of posts that match your search, including titles and brief summaries. You can then choose to view the details of any matching post.",
+
+    "Help: If you need assistance with using the system, I can guide you through the following: 1. Creating a new blog post. 2. Updating an existing post. 3. Deleting a post. 4. Viewing all posts. 5. Searching for a post. Let me know what you need help with!",
+
+    "Fallback and Error Handling: If I didn't understand your input, I'll ask you to choose from the following options: 1. Creating a new blog post. 2. Updating an existing post. 3. Deleting a post. 4. Viewing all posts. 5. Searching for a post. This ensures that we stay on track and I can assist you properly.",
+
+    "End of Interaction: When you're done, you can end the conversation by saying something like 'No, that’s all' or 'Goodbye'. I'll wish you a great day and remind you that I'm here if you need any more help in the future."
+]
+
+    return paragraphs
+
+def make_rag_prompt(query, relevant_passage):
+    relevant_passage = ' '.join(relevant_passage)
+    prompt = (
+        f"You are a helpful and informative chatbot that answers questions using text from the reference passage included below. "
+        f"Respond in a complete sentence and make sure that your response is easy to understand for everyone. "
+        f"Maintain a friendly and conversational tone. If the passage is irrelevant, feel free to ignore it.\n\n"
+        f"QUESTION: '{query}'\n"
+        f"PASSAGE: '{relevant_passage}'\n\n"
+        f"ANSWER:"
+    )
+    return prompt
+
+def generate_response(user_prompt):
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    answer = model.generate_content(user_prompt)
+    return answer.text
+
+class ChatbotAPIView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        query = request.data.get('query')
+        query=query.lower()
+        if not query:
+            return Response({"error": "Query not provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Get relevant passages based on the query
+            relevant_text = get_relevant_docs(query)
+            # Create the prompt for the Gemini API
+            prompt = make_rag_prompt(query, relevant_passage=relevant_text)
+
+            # Generate the response using the Gemini API
+            answer = generate_response(prompt)
+
+            return Response({"answer": answer}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer

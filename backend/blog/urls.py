@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path
 from .views import toggle_like_article, toggle_bookmark_article, get_user_articles
 from .views import BlogPostListCreateView
+from .views import ChatbotAPIView
 
 # Define the router and register the CommentViewSet
 router = DefaultRouter()
@@ -25,6 +26,7 @@ urlpatterns = [
     path('toggle-bookmark-article/<int:article_id>/', toggle_bookmark_article, name='toggle_bookmark_article'),
     path('get-user-articles/', get_user_articles, name='get_user_articles'),
     path('/posts/', BlogPostListCreateView.as_view(), name='blogpost-list-create'),
+    path('chatbot/', ChatbotAPIView.as_view(), name='chatbot'),
 
 ]
 

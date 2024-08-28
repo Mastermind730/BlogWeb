@@ -3,8 +3,6 @@ import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
-
-
 const fontHeading = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -32,6 +30,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         )}
       >
         {children}
+        <iframe
+          height="430"
+          width="350"
+          src="https://console.dialogflow.com/api-client/demo/embedded/1f5969de-0161-489a-95b9-b8822a76fd57"
+          style={{ position: 'fixed', bottom: '20px', right: '20px', border: 'none' }}
+        ></iframe>
       </body>
     </html>
   );
