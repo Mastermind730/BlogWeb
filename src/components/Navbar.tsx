@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge"; // Import ShadCN Badge component
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { FaTachometerAlt } from "react-icons/fa"; // Import an icon for the dashboard
 
 type Props = {};
 
@@ -57,29 +58,16 @@ const Navbar = (props: Props) => {
                 </Button>
               </>
             )}
-
-            {/* <button
-              onClick={toggleMobileMenu}
-              className="rounded bg-gray-700 p-2 text-gray-300 transition hover:text-gray-100"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button> */}
           </div>
 
           <div className="hidden md:flex items-center gap-8">
+            <Link
+              href="/dashboard"
+              className="flex items-center text-white hover:text-gray-400"
+            >
+              <FaTachometerAlt className="mr-2" />
+              Dashboard
+            </Link>
             {isLoggedIn ? (
               <>
                 <Badge className="rounded-full w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-xl font-bold">
@@ -116,9 +104,16 @@ const Navbar = (props: Props) => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-800 text-white">
           <div className="flex flex-col items-center p-4">
+            <Link
+              href="/dashboard"
+              className="flex items-center w-full text-white hover:text-gray-400"
+            >
+              <FaTachometerAlt className="mr-2" />
+              Dashboard
+            </Link>
             {isLoggedIn ? (
               <>
-                <Badge className="rounded-full w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-xl font-bold">
+                <Badge className="rounded-full w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-xl font-bold mt-4">
                   {username.charAt(0).toUpperCase()}
                 </Badge>
                 <Button

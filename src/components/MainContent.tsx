@@ -44,7 +44,7 @@ const MainContent = () => {
         "https://v1.nocodeapi.com/sourav_09/medium/GwiOVUQjnJVWzkme"
       );
       const fetchedArticles = response.data.map(
-        (article: Article, index: number) => ({
+        (article: Omit<Article, 'id' | 'isLiked' | 'isBookmarked' | 'category'>, index: number) => ({
           ...article,
           id: uuidv4(), // Generate a unique ID for each article
           isLiked: false,
@@ -54,73 +54,71 @@ const MainContent = () => {
       );
       setArticles(fetchedArticles);
       setFilteredArticles(fetchedArticles);
-  
+
       // Store the fetched articles in localStorage
+      localStorage.setItem("articles", JSON.stringify(fetchedArticles));
     } catch (error) {
       console.error("Error fetching articles:", error);
     } finally {
       setLoading(false);
     }
   };
-  
-  localStorage.setItem("articles", JSON.stringify(articles));
 
   useEffect(() => {
     fetchArticles();
   }, []);
 
-  const toggleLike = async (id: string) => {
-    try {
-      setArticles((prevArticles) =>
-        prevArticles.map((article) =>
-          article.id === id ? { ...article, isLiked: !article.isLiked } : article
-        )
+  const toggleLike = (id: string) => {
+    setArticles((prevArticles) => {
+      const updatedArticles = prevArticles.map((article) =>
+        article.id === id ? { ...article, isLiked: !article.isLiked } : article
       );
-  
-      const likedArticle = articles.find((article) => article.id === id);
+      const likedArticle = updatedArticles.find((article) => article.id === id);
       const likedCount = parseInt(localStorage.getItem("likedCount") || "0", 10);
-  
+
       if (likedArticle?.isLiked) {
-        localStorage.setItem("likedCount", (likedCount - 1).toString());
-        toast.error("Article disliked!");
-      } else {
         localStorage.setItem("likedCount", (likedCount + 1).toString());
         toast.success("Article liked!");
+      } else {
+        localStorage.setItem("likedCount", (likedCount - 1).toString());
+        toast.error("Article disliked!");
       }
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
+      localStorage.setItem("likedArticle",JSON.stringify(likedArticle))
+
+      // Store the updated articles list in localStorage
+      localStorage.setItem("articles", JSON.stringify(updatedArticles));
+
+      return updatedArticles;
+    });
   };
-  
-  const toggleBookmark = async (id: string) => {
-    try {
-      setArticles((prevArticles) =>
-        prevArticles.map((article) =>
-          article.id === id
-            ? { ...article, isBookmarked: !article.isBookmarked }
-            : article
-        )
+
+  const toggleBookmark = (id: string) => {
+    setArticles((prevArticles) => {
+      const updatedArticles = prevArticles.map((article) =>
+        article.id === id
+          ? { ...article, isBookmarked: !article.isBookmarked }
+          : article
       );
-  
-      const bookmarkedArticle = articles.find((article) => article.id === id);
+      const bookmarkedArticle = updatedArticles.find((article) => article.id === id);
       const bookmarkedCount = parseInt(
         localStorage.getItem("bookmarkedCount") || "0",
         10
       );
-  
+      localStorage.setItem("bookmarkedArticle",JSON.stringify(bookmarkedArticle))
       if (bookmarkedArticle?.isBookmarked) {
-        localStorage.setItem("bookmarkedCount", (bookmarkedCount - 1).toString());
-        toast.error("Article unbookmarked!");
-      } else {
         localStorage.setItem("bookmarkedCount", (bookmarkedCount + 1).toString());
         toast.success("Article bookmarked!");
+      } else {
+        localStorage.setItem("bookmarkedCount", (bookmarkedCount - 1).toString());
+        toast.error("Article unbookmarked!");
       }
-    } catch (error) {
-      console.error("Error toggling bookmark:", error);
-    }
+
+      // Store the updated articles list in localStorage
+      localStorage.setItem("articles", JSON.stringify(updatedArticles));
+
+      return updatedArticles;
+    });
   };
-  
-  
 
   useEffect(() => {
     if (searchQuery) {
@@ -214,7 +212,7 @@ const MainContent = () => {
                       </button>
                     </div>
                     <div className="inline-flex flex-col items-center">
-                      <Link href={"/comments"}>
+                      <Link href="/comments">
                         <svg
                           className="w-4 h-4 mr-1"
                           stroke="currentColor"
@@ -234,7 +232,9 @@ const MainContent = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500 w-full">No articles found.</p>
+            <p className="text-center text-gray-500 w-full">
+              No articles found.
+            </p>
           )}
         </div>
       </div>
