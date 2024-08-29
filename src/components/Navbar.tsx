@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge"; // Import ShadCN Badge component
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { FaTachometerAlt } from "react-icons/fa"; // Import an icon for the dashboard
+import { FaTachometerAlt, FaCommentDots, FaInfoCircle } from "react-icons/fa"; // Import icons for dashboard, comments, and about
 
 type Props = {};
 
@@ -18,7 +18,6 @@ const Navbar = (props: Props) => {
   useEffect(() => {
     // Simulate checking if the user is logged in (replace with real check)
     const loggedUser = localStorage.getItem("username");
-    // Assuming username is stored in localStorage
     if (loggedUser) {
       setIsLoggedIn(true);
       setUsername(loggedUser);
@@ -61,12 +60,28 @@ const Navbar = (props: Props) => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
+            {isLoggedIn && (
+              <Link
+                href="/dashboard"
+                className="flex items-center text-white hover:text-gray-400"
+              >
+                {/* <FaTachometerAlt className="mr-2" /> */}
+                Dashboard
+              </Link>
+            )}
             <Link
-              href="/dashboard"
+              href="/comments"
               className="flex items-center text-white hover:text-gray-400"
             >
-              <FaTachometerAlt className="mr-2" />
-              Dashboard
+              {/* <FaCommentDots className="mr-2" /> */}
+              Comments
+            </Link>
+            <Link
+              href="#main"
+              className="flex items-center text-white hover:text-gray-400"
+            >
+              {/* <FaInfoCircle className="mr-2" /> */}
+              About
             </Link>
             {isLoggedIn ? (
               <>
@@ -104,12 +119,28 @@ const Navbar = (props: Props) => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-800 text-white">
           <div className="flex flex-col items-center p-4">
+            {isLoggedIn && (
+              <Link
+                href="/dashboard"
+                className="flex items-center w-full text-white hover:text-gray-400"
+              >
+                <FaTachometerAlt className="mr-2" />
+                Dashboard
+              </Link>
+            )}
             <Link
-              href="/dashboard"
+              href="/comments"
               className="flex items-center w-full text-white hover:text-gray-400"
             >
-              <FaTachometerAlt className="mr-2" />
-              Dashboard
+              <FaCommentDots className="mr-2" />
+              Comments
+            </Link>
+            <Link
+              href="#main"
+              className="flex items-center w-full text-white hover:text-gray-400"
+            >
+              <FaInfoCircle className="mr-2" />
+              About
             </Link>
             {isLoggedIn ? (
               <>

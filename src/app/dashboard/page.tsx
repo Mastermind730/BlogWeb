@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import {
   Card,
   CardHeader,
@@ -31,41 +32,52 @@ const Dashboard = () => {
   const [bookmarkedArticles, setBookmarkedArticles] = useState<Article[]>([]);
   const [newPostTitle, setNewPostTitle] = useState<string>("");
   const [newPostContent, setNewPostContent] = useState<string>("");
+  const [newPostImage, setNewPostImage] = useState<File | null>(null);
 
   useEffect(() => {
     const storedLikedCount = localStorage.getItem("likedCount");
     const storedBookmarkedCount = localStorage.getItem("bookmarkedCount");
     const storedArticles = localStorage.getItem("articles");
-    const likedArticle = localStorage.getItem("likedArticle");
-    const bookmarkedArticle = localStorage.getItem("bookmarkedArticle");
+    const storedLikedArticles = localStorage.getItem("likedArticles");
+    const storedBookmarkedArticles = localStorage.getItem("bookmarkedArticles");
 
     if (storedLikedCount) setLikedCount(parseInt(storedLikedCount, 10));
     if (storedBookmarkedCount)
       setBookmarkedCount(parseInt(storedBookmarkedCount, 10));
     if (storedArticles) setArticles(JSON.parse(storedArticles));
-    if (likedArticles) setLikedArticles(JSON.parse(likedArticle));
-    if (bookmarkedArticles) setBookmarkedArticles(JSON.parse(bookmarkedArticle));
+    if (storedLikedArticles) setLikedArticles(JSON.parse(storedLikedArticles));
+    if (storedBookmarkedArticles)
+      setBookmarkedArticles(JSON.parse(storedBookmarkedArticles));
   }, []);
 
   const handleAddPost = async () => {
-    const response = await fetch('http://127.0.0.1:8000/api/posts/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: newPostTitle,
-        content: newPostContent,
-      }),
+    const formData = new FormData();
+    formData.append("title", newPostTitle);
+    formData.append("content", newPostContent);
+    if (newPostImage) {
+      formData.append("image", newPostImage);
+    }
+
+    const response = await fetch("http://127.0.0.1:8000/api/posts/", {
+      method: "POST",
+      body: formData,
     });
 
     if (response.ok) {
       const newPost = await response.json();
-      console.log('New Post Added:', newPost);
-      setNewPostTitle('');
-      setNewPostContent('');
+      console.log("New Post Added:", newPost);
+      setNewPostTitle("");
+      setNewPostContent("");
+      setNewPostImage(null);
     } else {
-      console.error('Failed to add post');
+      console.error("Failed to add post");
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setNewPostImage(e.target.files[0]);
+      setNewPostImage(null);
     }
   };
 
@@ -115,60 +127,60 @@ const Dashboard = () => {
           {articles
             .filter((article) => article.isLiked)
             .map((article) => (
-            <Card
-              key={article.id}
-              className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
-            >
-              <CardHeader className="border-b-2 border-gray-200">
-                <CardTitle className="text-2xl font-semibold">
-                  {article.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">{article.preview}</p>
-              </CardContent>
-              <CardFooter>
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:underline"
-                >
-                  Read More
-                </a>
-              </CardFooter>
-            </Card>
-          ))}
+              <Card
+                key={article.id}
+                className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
+              >
+                <CardHeader className="border-b-2 border-gray-200">
+                  <CardTitle className="text-2xl font-semibold">
+                    {article.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{article.preview}</p>
+                </CardContent>
+                <CardFooter>
+                  <a
+                    href={article.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:underline"
+                  >
+                    Read More
+                  </a>
+                </CardFooter>
+              </Card>
+            ))}
         </TabsContent>
 
         <TabsContent value="bookmarked" className="grid grid-cols-1 gap-8">
           {articles
             .filter((article) => article.isBookmarked)
             .map((article) => (
-            <Card
-              key={article.id}
-              className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
-            >
-              <CardHeader className="border-b-2 border-gray-200">
-                <CardTitle className="text-2xl font-semibold">
-                  {article.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">{article.preview}</p>
-              </CardContent>
-              <CardFooter>
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-purple-600 hover:underline"
-                >
-                  Read More
-                </a>
-              </CardFooter>
-            </Card>
-          ))}
+              <Card
+                key={article.id}
+                className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
+              >
+                <CardHeader className="border-b-2 border-gray-200">
+                  <CardTitle className="text-2xl font-semibold">
+                    {article.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{article.preview}</p>
+                </CardContent>
+                <CardFooter>
+                  <a
+                    href={article.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-purple-600 hover:underline"
+                  >
+                    Read More
+                  </a>
+                </CardFooter>
+              </Card>
+            ))}
         </TabsContent>
 
         <TabsContent value="addPost" className="grid grid-cols-1 gap-6">
@@ -186,11 +198,20 @@ const Dashboard = () => {
                 className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <Textarea
-                placeholder="Post Content"
+                placeholder="Post Content (Markdown Supported)"
                 value={newPostContent}
                 onChange={(e) => setNewPostContent(e.target.value)}
                 className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <ReactMarkdown className="prose">
+                {newPostContent}
+              </ReactMarkdown>
             </CardContent>
             <CardFooter className="flex justify-end">
               <Button

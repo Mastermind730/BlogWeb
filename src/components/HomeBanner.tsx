@@ -17,11 +17,11 @@ const HomeBanner = () => {
   }, []);
 
   return (
-    <section className="main relative bg-gradient-to-r from-blue-100 to-blue-200">
+    <section id='main' className=" relative mb-0 bg-gradient-to-r from-blue-100 to-blue-200">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/image.jpeg" 
+          src="/images.jpeg" 
           alt="Background" 
           width={400}
           height={500}

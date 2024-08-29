@@ -147,8 +147,9 @@ const MainContent = () => {
   }, [searchQuery, articles]);
 
   return (
-    <section id="#main" className="text-gray-600 body-font">
+    <section id="main" className="text-gray-600 mt-0 body-font relative bg-gradient-to-r from-blue-100 to-blue-200">
       <ToastContainer />
+
 
       <h1 className="text-center font-bold text-4xl mt-2 mb-2">Latest Posts</h1>
 
