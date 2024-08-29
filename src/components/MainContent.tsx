@@ -75,23 +75,29 @@ const MainContent = () => {
       );
       const likedArticle = updatedArticles.find((article) => article.id === id);
       const likedCount = parseInt(localStorage.getItem("likedCount") || "0", 10);
-
+  
+      let likedArticles = JSON.parse(localStorage.getItem("likedArticles") || "[]");
+  
       if (likedArticle?.isLiked) {
         localStorage.setItem("likedCount", (likedCount + 1).toString());
+        likedArticles.push(likedArticle);
         toast.success("Article liked!");
       } else {
         localStorage.setItem("likedCount", (likedCount - 1).toString());
+        likedArticles = likedArticles.filter((article: Article) => article.id !== id);
         toast.error("Article disliked!");
       }
-      localStorage.setItem("likedArticle",JSON.stringify(likedArticle))
-
+  
+      // Update the likedArticles array in localStorage
+      localStorage.setItem("likedArticles", JSON.stringify(likedArticles));
+  
       // Store the updated articles list in localStorage
       localStorage.setItem("articles", JSON.stringify(updatedArticles));
-
+  
       return updatedArticles;
     });
   };
-
+  
   const toggleBookmark = (id: string) => {
     setArticles((prevArticles) => {
       const updatedArticles = prevArticles.map((article) =>
@@ -104,21 +110,29 @@ const MainContent = () => {
         localStorage.getItem("bookmarkedCount") || "0",
         10
       );
-      localStorage.setItem("bookmarkedArticle",JSON.stringify(bookmarkedArticle))
+  
+      let bookmarkedArticles = JSON.parse(localStorage.getItem("bookmarkedArticles") || "[]");
+  
       if (bookmarkedArticle?.isBookmarked) {
         localStorage.setItem("bookmarkedCount", (bookmarkedCount + 1).toString());
+        bookmarkedArticles.push(bookmarkedArticle);
         toast.success("Article bookmarked!");
       } else {
         localStorage.setItem("bookmarkedCount", (bookmarkedCount - 1).toString());
+        bookmarkedArticles = bookmarkedArticles.filter((article: Article) => article.id !== id);
         toast.error("Article unbookmarked!");
       }
-
+  
+      // Update the bookmarkedArticles array in localStorage
+      localStorage.setItem("bookmarkedArticles", JSON.stringify(bookmarkedArticles));
+  
       // Store the updated articles list in localStorage
       localStorage.setItem("articles", JSON.stringify(updatedArticles));
-
+  
       return updatedArticles;
     });
   };
+  
 
   useEffect(() => {
     if (searchQuery) {
@@ -133,7 +147,7 @@ const MainContent = () => {
   }, [searchQuery, articles]);
 
   return (
-    <section className="text-gray-600 body-font">
+    <section id="#main" className="text-gray-600 body-font">
       <ToastContainer />
 
       <h1 className="text-center font-bold text-4xl mt-2 mb-2">Latest Posts</h1>

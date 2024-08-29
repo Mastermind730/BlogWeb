@@ -27,6 +27,8 @@ const Dashboard = () => {
   const [likedCount, setLikedCount] = useState<number>(0);
   const [bookmarkedCount, setBookmarkedCount] = useState<number>(0);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [likedArticles, setLikedArticles] = useState<Article[]>([]);
+  const [bookmarkedArticles, setBookmarkedArticles] = useState<Article[]>([]);
   const [newPostTitle, setNewPostTitle] = useState<string>("");
   const [newPostContent, setNewPostContent] = useState<string>("");
 
@@ -34,11 +36,15 @@ const Dashboard = () => {
     const storedLikedCount = localStorage.getItem("likedCount");
     const storedBookmarkedCount = localStorage.getItem("bookmarkedCount");
     const storedArticles = localStorage.getItem("articles");
+    const likedArticle = localStorage.getItem("likedArticle");
+    const bookmarkedArticle = localStorage.getItem("bookmarkedArticle");
 
     if (storedLikedCount) setLikedCount(parseInt(storedLikedCount, 10));
     if (storedBookmarkedCount)
       setBookmarkedCount(parseInt(storedBookmarkedCount, 10));
     if (storedArticles) setArticles(JSON.parse(storedArticles));
+    if (likedArticles) setLikedArticles(JSON.parse(likedArticle));
+    if (bookmarkedArticles) setBookmarkedArticles(JSON.parse(bookmarkedArticle));
   }, []);
 
   const handleAddPost = async () => {
@@ -64,19 +70,19 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <Card className="mb-8 shadow-xl">
+    <div className="container mx-auto p-6 bg-gray-50">
+      <Card className="mb-8 shadow-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
         <CardHeader>
-          <CardTitle className="text-4xl font-bold text-center mb-4">
+          <CardTitle className="text-5xl font-bold text-center mb-4">
             Dashboard
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
-          <p className="text-2xl text-center">
+          <p className="text-3xl text-center">
             <span className="font-semibold">Liked Articles: </span>
             {likedCount}
           </p>
-          <p className="text-2xl text-center">
+          <p className="text-3xl text-center">
             <span className="font-semibold">Bookmarked Articles: </span>
             {bookmarkedCount}
           </p>
@@ -84,84 +90,90 @@ const Dashboard = () => {
       </Card>
 
       <Tabs defaultValue="liked" className="mb-8">
-        <TabsList className="justify-center space-x-4">
+        <TabsList className="justify-center space-x-6">
           <TabsTrigger
             value="liked"
-            className="px-4 py-2 rounded-lg font-semibold text-lg hover:bg-gray-100 hover:shadow-md"
+            className="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-indigo-600 hover:bg-indigo-100 shadow-md"
           >
             Liked Articles
           </TabsTrigger>
           <TabsTrigger
             value="bookmarked"
-            className="px-4 py-2 rounded-lg font-semibold text-lg hover:bg-gray-100 hover:shadow-md"
+            className="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-purple-600 hover:bg-purple-100 shadow-md"
           >
             Bookmarked Articles
           </TabsTrigger>
           <TabsTrigger
             value="addPost"
-            className="px-4 py-2 rounded-lg font-semibold text-lg hover:bg-gray-100 hover:shadow-md"
+            className="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-pink-600 hover:bg-pink-100 shadow-md"
           >
             Add a Blog Post
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="liked" className="grid grid-cols-1 gap-6">
+        <TabsContent value="liked" className="grid grid-cols-1 gap-8">
           {articles
             .filter((article) => article.isLiked)
             .map((article) => (
-              <Card key={article.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold">
-                    {article.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700">{article.preview}</p>
-                </CardContent>
-                <CardFooter>
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Read More
-                  </a>
-                </CardFooter>
-              </Card>
-            ))}
+            <Card
+              key={article.id}
+              className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
+            >
+              <CardHeader className="border-b-2 border-gray-200">
+                <CardTitle className="text-2xl font-semibold">
+                  {article.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">{article.preview}</p>
+              </CardContent>
+              <CardFooter>
+                <a
+                  href={article.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-600 hover:underline"
+                >
+                  Read More
+                </a>
+              </CardFooter>
+            </Card>
+          ))}
         </TabsContent>
 
-        <TabsContent value="bookmarked" className="grid grid-cols-1 gap-6">
+        <TabsContent value="bookmarked" className="grid grid-cols-1 gap-8">
           {articles
             .filter((article) => article.isBookmarked)
             .map((article) => (
-              <Card key={article.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold">
-                    {article.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700">{article.preview}</p>
-                </CardContent>
-                <CardFooter>
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Read More
-                  </a>
-                </CardFooter>
-              </Card>
-            ))}
+            <Card
+              key={article.id}
+              className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg"
+            >
+              <CardHeader className="border-b-2 border-gray-200">
+                <CardTitle className="text-2xl font-semibold">
+                  {article.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">{article.preview}</p>
+              </CardContent>
+              <CardFooter>
+                <a
+                  href={article.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-purple-600 hover:underline"
+                >
+                  Read More
+                </a>
+              </CardFooter>
+            </Card>
+          ))}
         </TabsContent>
 
         <TabsContent value="addPost" className="grid grid-cols-1 gap-6">
-          <Card className="shadow-lg">
-            <CardHeader>
+          <Card className="shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white text-gray-900 rounded-lg">
+            <CardHeader className="border-b-2 border-gray-200">
               <CardTitle className="text-2xl font-semibold">
                 Add a New Blog Post
               </CardTitle>
@@ -171,17 +183,20 @@ const Dashboard = () => {
                 placeholder="Post Title"
                 value={newPostTitle}
                 onChange={(e) => setNewPostTitle(e.target.value)}
-                className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <Textarea
                 placeholder="Post Content"
                 value={newPostContent}
                 onChange={(e) => setNewPostContent(e.target.value)}
-                className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button onClick={handleAddPost} className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300">
+              <Button
+                onClick={handleAddPost}
+                className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors duration-300"
+              >
                 Add Post
               </Button>
             </CardFooter>

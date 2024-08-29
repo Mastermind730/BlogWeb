@@ -3,6 +3,9 @@ import React, { ReactNode, useState } from 'react';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { FaRobot } from "react-icons/fa";
 
 const fontHeading = Inter({
   subsets: ['latin'],
@@ -36,23 +39,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           fontBody.variable
         )}
       >
+              <Navbar/>
+
         {children}
-        <button 
+        <button className='bg-blue-400 hover:bg-blue-500'
           onClick={toggleChatbot} 
           style={{
             position: 'fixed', 
             bottom: '20px', 
             right: '20px', 
             zIndex: 1000,
-            backgroundColor: '#007bff', 
             color: 'white', 
             border: 'none', 
             borderRadius: '5px',
             padding: '10px',
             cursor: 'pointer'
+            
           }}
         >
-          {isChatbotVisible ? 'Hide Chatbot' : 'Show Chatbot'}
+          {isChatbotVisible ? <FaRobot/> : <FaRobot/>}
         </button>
         {isChatbotVisible && (
           <iframe
@@ -68,6 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             }}
           ></iframe>
         )}
+      <Footer/>
       </body>
     </html>
   );

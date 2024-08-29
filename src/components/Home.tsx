@@ -17,7 +17,7 @@ export default function HomePage(): JSX.Element {
   return (
     <div className="">
       {/* Header Section */}
-     <Navbar/>
+     {/* <Navbar/> */}
 
       {/* Hero Section */}
 <HomeBanner/>
@@ -29,7 +29,7 @@ export default function HomePage(): JSX.Element {
       {/* <Subscribe/> */}
 
       {/* Footer Section */}
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }
