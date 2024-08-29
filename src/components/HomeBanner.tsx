@@ -72,7 +72,7 @@ const HomeBanner = () => {
                 Connect with like-minded individuals, join discussions, and expand your network.
               </p>
               <Link 
-                href="#community" 
+                href="#contact" 
                 className="mt-4 inline-block text-blue-600 hover:text-blue-500"
               >
                 Join Us →
